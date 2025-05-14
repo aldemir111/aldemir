@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rosa Encantada - Perfume Elegance</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f5f2;
+            color: #333;
+        }
+        
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #c09f80;
+        }
+        
+        .logo span {
+            color: #8e6e53;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #c09f80;
+        }
+        
+        .product-detail {
+            margin-top: 120px;
+            padding: 0 5% 60px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeIn 1s ease;
+        }
+        
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-gallery {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .thumbnail-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .thumbnail {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .thumbnail:hover {
+            transform: scale(1.1);
+        }
+        
+        .product-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .product-category {
+            color: #c09f80;
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .product-title {
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .product-rating {
+            color: #ffc107;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .product-price {
+            font-size: 28px;
+            font-weight: bold;
+            color: #8e6e53;
+            margin-bottom: 25px;
+        }
+        
+        .product-description {
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #666;
+        }
+        
+        .product-features {
+            margin-bottom: 30px;
+        }
+        
+        .product-features h4 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .product-features ul {
+            list-style-position: inside;
+            color: #666;
+        }
+        
+        .product-features li {
+            margin-bottom: 8px;
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .quantity-selector button {
+            background-color: #f0e6dd;
+            border: none;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            cursor: pointer;
+            color: #8e6e53;
+        }
+        
+        .quantity-selector input {
+            width: 60px;
+            height: 40px;
+            text-align: center;
+            border: 1px solid #f0e6dd;
+            font-size: 16px;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: #c09f80;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .btn:hover {
+            background-color: #8e6e53;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outlined {
+            background-color: transparent;
+            border: 2px solid #c09f80;
+            color: #c09f80;
+        }
+        
+        .btn-outlined:hover {
+            background-color: #c09f80;
+            color: white;
+        }
+        
+        .whatsapp-btn {
+            background-color: #25D366;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+        }
+        
+        .related-products {
+            margin-top: 80px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 28px;
+            color: #333;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        /* Estilos para el formulario de contacto */
+        .contact-form {
+            max-width: 800px;
+            margin: 60px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .contact-form h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        .contact-form form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .contact-form input,
+        .contact-form textarea,
+        .contact-form select {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: inherit;
+        }
+        
+        .contact-form button {
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        /* Estilos para el resumen del pedido */
+        .order-summary {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .order-summary h3 {
+            margin-bottom: 15px;
+            color: #8e6e53;
+        }
+        
+        .order-summary p {
+            margin-bottom: 8px;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 60px 5% 30px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #c09f80;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: #bbb;
+            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: #fff;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #888;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .product-container {
+                padding: 20px;
+            }
+            
+            .product-title {
+                font-size: 26px;
+            }
+            
+            .product-price {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Perfume <span>Elegance</span></div>
+            <div class="nav-links">
+                <a href="index.html">Inicio</a>
+                <a href="productos.html">Productos</a>
+                <a href="contacto.html">Contacto</a>
+            </div>
+        </nav>
+    </header>
+    
+    <section class="product-detail">
+        <div class="product-container">
+            <div class="product-gallery">
+                <img src="/api/placeholder/600/800" alt="Rosa Encantada" class="main-image">
+                <div class="thumbnail-container">
+                    <img src="/api/placeholder/150/150" alt="Miniatura 1" class="thumbnail">
+                    <img src="/api/placeholder/150/150" alt="Miniatura 2" class="thumbnail">
+                    <img src="/api/placeholder/150/150" alt="Miniatura 3" class="thumbnail">
+                    <img src="/api/placeholder/150/150" alt="Miniatura 4" class="thumbnail">
+                </div>
+            </div>
+            
+            <div class="product-info">
+                <p class="product-category">Fragancia Floral</p>
+                <h1 class="product-title">Rosa Encantada</h1>
+                <div class="product-rating">★★★★★ <span>(24 reseñas)</span></div>
+                <p class="product-price">650.000 Gs.</p>
+                
+                <p class="product-description">
+                    Rosa Encantada es una fragancia floral exquisita que combina la frescura de rosas recién cortadas con la sensualidad del jazmín y un toque cálido de vainilla. Perfecta para mujeres que buscan un aroma elegante y sofisticado que perdure durante todo el día.
+                </p>
+                
+                <div class="product-features">
+                    <h4>Características principales:</h4>
+                    <ul>
+                        <li>Notas de salida: Rosa, bergamota</li>
+                        <li>Notas de corazón: Jazmín, peonía</li>
+                        <li>Notas de fondo: Vainilla, almizcle, sándalo</li>
+                        <li>Duración: 8-10 horas</li>
+                        <li>Intensidad: Moderada</li>
+                        <li>Presentación: Frasco de 100ml</li>
+                    </ul>
+                </div>
+                
+                <div class="quantity-selector">
+                    <button id="minus-btn">-</button>
+                    <input type="number" id="quantity" value="1" min="1">
+                    <button id="plus-btn">+</button>
+                </div>
+                
+                <div class="product-actions">
+                    <button id="add-to-cart" class="btn">Añadir al carrito</button>
+                    <button id="buy-now" class="btn btn-outlined">Comprar ahora</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="related-products">
+            <h2 class="section-title">Productos relacionados</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <img src="/api/placeholder/400/300" alt="Brisa Primaveral" class="product-img">
+                    <div class="product-info">
+                        <p class="product-category">Floral</p>
+                        <h3 class="product-name">Brisa Primaveral</h3>
+                        <p class="product-price">600.000 Gs.</p>
+                        <div class="product-actions">
+                            <a href="producto-brisa-primaveral.html" class="btn">Ver Detalles</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <img src="/api/placeholder/400/300" alt="Amanecer Dorado" class="product-img">
+                    <div class="product-info">
+                        <p class="product-category">Oriental</p>
+                        <h3 class="product-name">Amanecer Dorado</h3>
+                        <p class="product-price">850.000 Gs.</p>
+                        <div class="product-actions">
+                            <a href="producto-amanecer-dorado.html" class="btn">Ver Detalles</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <img src="/api/placeholder/400/300" alt="Vainilla Dulce" class="product-img">
+                    <div class="product-info">
+                        <p class="product-category">Oriental</p>
+                        <h3 class="product-name">Vainilla Dulce</h3>
+                        <p class="product-price">700.000 Gs.</p>
+                        <div class="product-actions">
+                            <a href="producto-vainilla-dulce.html" class="btn">Ver Detalles</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Formulario de contacto con resumen del pedido -->
+    <section class="contact-form" id="contacto">
+        <h2>Finalizar Compra</h2>
+        <form id="pedidoForm">
+            <!-- Resumen del pedido -->
+            <div class="order-summary">
+                <h3>Resumen de tu pedido</h3>
+                <p id="summary-product">Producto: Rosa Encantada</p>
+                <p id="summary-quantity">Cantidad: 1</p>
+                <p id="summary-price">Precio unitario: 650.000 Gs.</p>
+                <p id="summary-total">Total: 650.000 Gs.</p>
+                <p class="whatsapp-notice">Te enviaremos el recibo por WhatsApp</p>
+            </div>
+            
+            <!-- Campos del formulario -->
+            <input type="text" name="name" id="client-name" placeholder="Ñembohero réra" required>
+            <input type="tel" name="phone" id="client-phone" placeholder="Pumbyry papapy (ej: 0985123456)" required>
+            <textarea name="address" rows="3" placeholder="Mba'épe entregará (dirección)" required></textarea>
+            <select name="payment" required>
+                <option value="" disabled selected>Mba'éicha epagáta</option>
+                <option value="tarjeta">Tarjeta crédito/débito</option>
+                <option value="transferencia">Transferencia bancaria</option>
+                <option value="efectivo">Pago en efectivo</option>
+            </select>
+            <textarea name="comments" rows="3" placeholder="Marandu añete (comentarios adicionales)"></textarea>
+            
+            <!-- Campos ocultos para información del producto -->
+            <input type="hidden" id="hidden-product" name="product" value="Rosa Encantada">
+            <input type="hidden" id="hidden-quantity" name="quantity" value="1">
+            <input type="hidden" id="hidden-price" name="price" value="650000">
+            <input type="hidden" id="hidden-total" name="total" value="650000">
+            
+            <button type="button" id="submit-btn" class="btn whatsapp-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.479 5.092 1.479 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                </svg>
+                Enviar pedido por WhatsApp
+            </button>
+        </form>
+    </section>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Perfume Elegance</h3>
+                <p>Fragancias exclusivas ha alta calidad omomba'eguasúva nde rekoha ha nde teko.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Enlaces Rápidos</h3>
+                <a href="index.html">Inicio</a>
+                <a href="productos.html">Productos</a>
+                <a href="contacto.html">Contacto</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <p><strong>WhatsApp:</strong> +595 981 234567</p>
+                <p><strong>Teléfono:</strong> +595 21 123456</p>
+                <p><strong>Dirección:</strong> Calle Principal 123, Asunción</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Seguinos</h3>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+                <a href="#">TikTok</a>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 Perfume Elegance. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Galería de imágenes
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const mainImage = document.querySelector('.main-image');
+        
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener('click', () => {
+                mainImage.src = thumbnail.src.replace('150/150', '600/800');
+            });
+        });
+
+        // Selector de cantidad
+        const minusBtn = document.getElementById('minus-btn');
+        const plusBtn = document.getElementById('plus-btn');
+        const quantityInput = document.getElementById('quantity');
+        const price = 650000; // Precio en guaraníes
+        
+        minusBtn.addEventListener('click', () => {
+            let value = parseInt(quantityInput.value);
+            if (value > 1) {
+                quantityInput.value = value - 1;
+                updateOrderSummary();
+            }
+        });
+        
+        plusBtn.addEventListener('click', () => {
+            let value = parseInt(quantityInput.value);
+            quantityInput.value = value + 1;
+            updateOrderSummary();
+        });
+        
+        quantityInput.addEventListener('change', () => {
+            if (quantityInput.value < 1) quantityInput.value = 1;
+            updateOrderSummary();
+        });
+        
+        // Formatear número con separadores de miles
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+        
+        // Actualizar resumen del pedido
+        function updateOrderSummary() {
+            const quantity = parseInt(quantityInput.value);
+            const total = quantity * price;
+            
+            // Actualizar elementos visibles
+            document.getElementById('summary-quantity').textContent = `Cantidad: ${quantity}`;
+            document.getElementById('summary-total').textContent = `Total: ${formatNumber(total)} Gs.`;
+            
+            // Actualizar campos ocultos del formulario
+            document.getElementById('hidden-quantity').value = quantity;
+            document.getElementById('hidden-total').value = total;
+        }
+        
+        // Botones de acción
+        document.getElementById('add-to-cart').addEventListener('click', () => {
+            alert(`Se agregaron ${quantityInput.value} unidades de Rosa Encantada al carrito`);
+        });
+        
+        document.getElementById('buy-now').addEventListener('click', () => {
+            document.getElementById('contacto').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Enviar pedido por WhatsApp
+        document.getElementById('submit-btn').addEventListener('click', () => {
+            const name = document.getElementById('client-name').value;
+            const phone = document.getElementById('client-phone').value;
+            const product = document.getElementById('hidden-product').value;
+            const quantity = document.getElementById('hidden-quantity').value;
+            const total = document.getElementById('hidden-total').value;
+            
+            if (!name || !phone) {
+                alert('Por favor complete su nombre y número de teléfono');
+                return;
+            }
+            
+            // Formatear mensaje para WhatsApp
+            const message = `¡Hola Perfume Elegance! Quiero hacer un pedido:\n\n` +
+                           `*Producto:* ${product}\n` +
+                           `*Cantidad:* ${quantity}\n` +
+                           `*Total:* ${formatNumber(total)} Gs.\n\n` +
+                           `*Nombre:* ${name}\n` +
+                           `*Teléfono:* ${phone}\n\n` +
+                           `Por favor envíenme el recibo por WhatsApp. ¡Gracias!`;
+            
+            // Codificar mensaje para URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Número de WhatsApp (cambiar por el número real)
+            const whatsappNumber = '595981234567';
+            
+            // Abrir WhatsApp con el mensaje
+            window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
+        });
+        
+        // Inicializar resumen del pedido
+        updateOrderSummary();
+    </script>
+</body>
+</html>
