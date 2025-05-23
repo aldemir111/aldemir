@@ -1,1 +1,1381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Trivia Anticonceptivos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 95%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 3.2em;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(45deg, #ffd700, #ff69b4, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            padding: 18px 35px;
+            margin: 12px;
+            border-radius: 30px;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #a8e6cf, #dcedc8);
+            color: #2c3e50;
+        }
+
+        .input-group {
+            margin: 25px 0;
+        }
+
+        .input-group input, .input-group select {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.1em;
+            margin: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            min-width: 250px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .question-container {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 25px 0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .question-number {
+            font-size: 1.3em;
+            color: #ffd700;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .question {
+            font-size: 1.4em;
+            margin-bottom: 30px;
+            line-height: 1.5;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 18px;
+            margin: 25px 0;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.2);
+            border: 3px solid transparent;
+            padding: 18px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-size: 1.1em;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.3s;
+        }
+
+        .option:hover::before {
+            left: 100%;
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.35);
+            border-color: #ffd700;
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .option.selected {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-color: #ffd700;
+            transform: scale(1.05);
+        }
+
+        .option.correct {
+            background: linear-gradient(45deg, #4CAF50, #8BC34A) !important;
+            border-color: #4CAF50 !important;
+            animation: correctPulse 0.6s ease-in-out;
+        }
+
+        .option.incorrect {
+            background: linear-gradient(45deg, #f44336, #ff5722) !important;
+            border-color: #f44336 !important;
+            animation: incorrectShake 0.6s ease-in-out;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1.05); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes incorrectShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .timer {
+            font-size: 2.5em;
+            color: #ffd700;
+            margin: 25px 0;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            font-weight: bold;
+        }
+
+        .timer.urgent {
+            color: #ff4444;
+            animation: timerPulse 1s infinite;
+        }
+
+        @keyframes timerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .score {
+            font-size: 1.6em;
+            margin: 25px 0;
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+
+        .player-info {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 20px;
+            margin: 25px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .player {
+            text-align: center;
+            padding: 15px;
+            border-radius: 15px;
+            transition: all 0.4s ease;
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .player.active {
+            background: linear-gradient(45deg, #ffd700, #ff69b4);
+            transform: scale(1.08);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
+            animation: playerGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes playerGlow {
+            0%, 100% { box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4); }
+            50% { box-shadow: 0 15px 35px rgba(255, 215, 0, 0.6); }
+        }
+
+        .player-name {
+            font-weight: bold;
+            font-size: 1.3em;
+            color: #ffd700;
+            margin-bottom: 8px;
+        }
+
+        .player.active .player-name {
+            color: #fff;
+        }
+
+        .player-score {
+            font-size: 1.2em;
+            color: #4ecdc4;
+        }
+
+        .player.active .player-score {
+            color: #fff;
+        }
+
+        .current-turn {
+            font-size: 1.4em;
+            color: #ffd700;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .phrase-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .phrase-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .phrase-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 50px;
+            border-radius: 25px;
+            text-align: center;
+            max-width: 85%;
+            max-height: 80%;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            animation: phraseAnimation 0.6s ease-out;
+        }
+
+        @keyframes phraseAnimation {
+            0% {
+                transform: scale(0.3) rotate(-15deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1) rotate(3deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .phrase-text {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 25px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            line-height: 1.3;
+        }
+
+        .phrase-player {
+            font-size: 1.6em;
+            color: #ffd700;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .phrase-close {
+            margin-top: 30px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            padding: 18px 35px;
+            border-radius: 30px;
+            color: white;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .phrase-close:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: #ffd700;
+            animation: confettiFall 4s linear infinite;
+            z-index: 1000;
+            border-radius: 50%;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #4ecdc4, #44d7c4);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .credits {
+            font-size: 0.95em;
+            opacity: 0.8;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .results-screen {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .final-score {
+            font-size: 2.5em;
+            color: #ffd700;
+            margin: 30px 0;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .winner-announcement {
+            font-size: 2em;
+            color: #4ecdc4;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        /* Nuevos estilos para vidas */
+        .lives-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .life {
+            width: 25px;
+            height: 25px;
+            background-color: #ff6b6b;
+            margin: 0 3px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .life.lost {
+            background-color: #555;
+        }
+        
+        /* Estilos para selección de jugador */
+        .player-selector {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+        }
+        
+        .player-option {
+            padding: 10px 15px;
+            margin: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .player-option:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .player-option.selected {
+            background: linear-gradient(45deg, #ffd700, #ff69b4);
+            font-weight: bold;
+        }
+
+        /* Overlay para selección de turno */
+        .turn-selector-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .turn-selector-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .turn-selector-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 50px;
+            border-radius: 25px;
+            text-align: center;
+            max-width: 85%;
+            max-height: 80%;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            animation: phraseAnimation 0.6s ease-out;
+        }
+
+        .turn-selector-title {
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                width: 98%;
+            }
+            
+            h1 {
+                font-size: 2.2em;
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .player-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .phrase-content {
+                padding: 30px 20px;
+                max-width: 95%;
+            }
+
+            .phrase-text {
+                font-size: 1.6em;
+            }
+
+            .input-group input, .input-group select {
+                min-width: 200px;
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .phrase-text {
+                font-size: 1.3em;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Menu Principal -->
+        <div class="screen active" id="menuScreen">
+            <h1>🎯 Trivia Anticonceptivos</h1>
+            <p class="subtitle">¡Pon a prueba tus conocimientos sobre salud reproductiva! �💊</p>
+            <div class="credits">
+                Creado con ❤️ por <strong>Aldemir</strong> ✨
+            </div>
+            <button class="btn" onclick="showSetup('individual')">🎮 Juego Individual</button>
+            <button class="btn" onclick="showSetup('versus')">⚔️ Modo Versus</button>
+        </div>
+
+        <!-- Configuración del Juego -->
+        <div class="screen" id="setupScreen">
+            <h2>⚙️ Configuración del Juego</h2>
+            <div class="input-group">
+                <input type="text" id="player1Name" placeholder="Nombre del Jugador 1" required maxlength="20">
+                <div id="versusInputs" style="display: none;">
+                    <input type="text" id="player2Name" placeholder="Nombre del Jugador 2" required maxlength="20">
+                    <select id="questionCount">
+                        <option value="10">10 preguntas</option>
+                        <option value="20">20 preguntas</option>
+                        <option value="30" selected>30 preguntas (Todas)</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn" onclick="startGame()">🚀 Comenzar Juego</button>
+            <button class="btn btn-secondary" onclick="showScreen('menuScreen')">↩️ Volver al Menú</button>
+        </div>
+
+        <!-- Pantalla del Juego -->
+        <div class="screen" id="gameScreen">
+            <div class="player-info" id="playerInfo"></div>
+            <div class="current-turn" id="currentTurn"></div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            
+            <div class="timer" id="timer">⏰ 40</div>
+            <div class="score" id="score">Pregunta 1 de 30</div>
+            
+            <div class="question-container">
+                <div class="question-number" id="questionNumber">Pregunta 1</div>
+                <div class="question" id="question"></div>
+                <div class="options" id="options"></div>
+            </div>
+            
+            <div style="margin-top: 25px;">
+                <button class="btn" id="nextBtn" onclick="nextQuestion()" style="display: none;">➡️ Siguiente Pregunta</button>
+                <button class="btn btn-secondary" onclick="showScreen('menuScreen')">🏠 Volver al Menú</button>
+            </div>
+        </div>
+
+        <!-- Pantalla de Resultados -->
+        <div class="screen" id="resultsScreen">
+            <div class="results-screen">
+                <h2>🏆 ¡Juego Terminado!</h2>
+                <div class="winner-announcement" id="winnerText"></div>
+                <div class="final-score" id="finalScores"></div>
+                <button class="btn" onclick="showScreen('menuScreen')">🔄 Jugar de Nuevo</button>
+            </div>
+        </div>
+
+        <!-- Overlay para frases -->
+        <div class="phrase-overlay" id="phraseOverlay">
+            <div class="phrase-content">
+                <div class="phrase-text" id="phraseText"></div>
+                <div class="phrase-player" id="phrasePlayer"></div>
+                <button class="phrase-close" onclick="closePhraseOverlay()">✨ Continuar</button>
+            </div>
+        </div>
+
+        <!-- Overlay para selección de turno -->
+        <div class="turn-selector-overlay" id="turnSelectorOverlay">
+            <div class="turn-selector-content">
+                <div class="turn-selector-title">¿Quién sigue en el turno?</div>
+                <div id="turnSelectorOptions"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuración del juego
+        const GAME_CONFIG = {
+            DEFAULT_TIME: 40, // Cambiado de 20 a 40 segundos
+            MIN_TIME: 5,
+            TIME_REDUCTION: 2,
+            CONFETTI_COUNT: 60,
+            MAX_LIVES: 3
+        };
+
+        // Frases más "picantes" para el perdedor
+        const frasesPerdedor = [
+            "¡JAJAJA! ¿Eso fue un intento? 😂",
+            "¡Hasta mi abuela sabe más que tú! 👵",
+            "¿Seguro que no estás jugando con los ojos cerrados? 🧑‍🦯",
+            "¡Esa respuesta fue más floja que chicle pegado en el zapato! 👟",
+            "¡Con esos conocimientos mejor dedícate a otra cosa! 🚮",
+            "¡Vergüenza debería darte! 🫣",
+            "¿En serio? ¿Esa fue tu mejor respuesta? 🤦",
+            "¡Ni con las respuestas escritas en la mano! ✋",
+            "¡Patético! Hasta un niño de kinder lo haría mejor 🧒",
+            "¡Esa respuesta me dio pena ajena! 😳"
+        ];
+
+        // Frases más alagadoras para el ganador
+        const frasesGanador = [
+            "¡Eres un genio! ¿Dónde te escondías? 🧠",
+            "¡Impresionante! Deberías dar clases 📚",
+            "¡WOW! Tu conocimiento es asombroso ✨",
+            "¡Perfecto! Eres el/la mejor sin duda 🏆",
+            "¡Insuperable! Nadie puede contra ti 💪",
+            "¡Brillante! Como un diamante 💎",
+            "¡Excelente! Deberías estar orgulloso/a 😊",
+            "¡Increíble! Eres una máquina de conocimiento 🤖",
+            "¡Perfect score! ¿Eres humano o robot? 🤖",
+            "¡Legendario/a! Tu nombre quedará en los records 🏅"
+        ];
+
+        const frasesAcierto = [
+            "¡Correcto! Sigue así 👏",
+            "¡Bien hecho! 🎯",
+            "¡Respuesta perfecta! 💯",
+            "¡Acertaste! 🎉",
+            "¡Excelente respuesta! 🌟"
+        ];
+
+        const frasesError = [
+            "¡Incorrecto! Sigue intentando 💪",
+            "¡Ups! Esa no era 😅",
+            "¡Error! Pero no te rindas 🧠",
+            "¡Mala suerte! La próxima será 🤞",
+            "¡Esa no era! Sigue aprendiendo 📚"
+        ];
+
+        const questions = [
+            {
+                question: "¿Cuál de los siguientes métodos anticonceptivos también protege contra infecciones de transmisión sexual (ITS)?",
+                options: ["DIU", "Píldora anticonceptiva", "Implante subdérmico", "Condón"],
+                correct: 3
+            },
+            {
+                question: "¿Qué método anticonceptivo hormonal se toma diariamente?",
+                options: ["Inyección mensual", "Píldora anticonceptiva", "Parche anticonceptivo", "DIU hormonal"],
+                correct: 1
+            },
+            {
+                question: "¿Cuál de los siguientes métodos es un anticonceptivo de emergencia?",
+                options: ["Parche", "Píldora del día después", "Condón", "Espermicida"],
+                correct: 1
+            },
+            {
+                question: "¿Dónde se coloca el implante subdérmico?",
+                options: ["Abdomen", "Pierna", "Brazo", "Espalda baja"],
+                correct: 2
+            },
+            {
+                question: "¿Qué método anticonceptivo requiere una intervención quirúrgica en el hombre?",
+                options: ["DIU", "Vasectomía", "Coitus interruptus", "Condón"],
+                correct: 1
+            },
+            {
+                question: "¿Cuál es el principal mecanismo de acción de la píldora anticonceptiva combinada?",
+                options: ["Destruir espermatozoides", "Inhibir la ovulación", "Aumentar la menstruación", "Cambiar la flora vaginal"],
+                correct: 1
+            },
+            {
+                question: "¿Qué método se aplica semanalmente y se pega a la piel?",
+                options: ["DIU", "Condón femenino", "Parche anticonceptivo", "Implante subdérmico"],
+                correct: 2
+            },
+            {
+                question: "¿Cuál de los siguientes es un método de barrera?",
+                options: ["Píldora", "DIU", "Parche", "Condón femenino"],
+                correct: 3
+            },
+            {
+                question: "¿Qué método anticonceptivo se coloca en el útero?",
+                options: ["Implante", "DIU", "Píldora", "Parche"],
+                correct: 1
+            },
+            {
+                question: "¿Cuál es un efecto secundario común de los métodos hormonales?",
+                options: ["Visión mejorada", "Dolor de estómago severo", "Náuseas", "Mayor energía"],
+                correct: 2
+            },
+            {
+                question: "¿Qué método anticonceptivo puede durar hasta 5 años?",
+                options: ["Píldora", "Parche", "DIU hormonal", "Espermicida"],
+                correct: 2
+            },
+            {
+                question: "¿Qué método puede ser reversible y efectivo por varios años sin mantenimiento diario?",
+                options: ["Vasectomía", "Píldora", "DIU", "Condón"],
+                correct: 2
+            },
+            {
+                question: "¿Cuál es el método más adecuado si se desea protección contra ITS y embarazo?",
+                options: ["Píldora + Parche", "DIU hormonal", "Condón", "Implante"],
+                correct: 2
+            },
+            {
+                question: "¿Cuál es un método natural de planificación familiar?",
+                options: ["Método del ritmo", "Parche", "DIU", "Píldora"],
+                correct: 0
+            },
+            {
+                question: "¿Qué método anticonceptivo se debe utilizar justo antes de la relación sexual?",
+                options: ["Píldora", "Implante", "Espermicida", "DIU"],
+                correct: 2
+            },
+            {
+                question: "¿Cuál de los siguientes NO es un método hormonal?",
+                options: ["Parche", "DIU de cobre", "Implante", "Inyección"],
+                correct: 1
+            },
+            {
+                question: "¿Qué método anticonceptivo se administra una vez cada tres meses?",
+                options: ["Parche", "DIU", "Inyección anticonceptiva", "Condón"],
+                correct: 2
+            },
+            {
+                question: "¿Qué método anticonceptivo puede afectar el ciclo menstrual?",
+                options: ["Píldora anticonceptiva", "Condón", "Espermicida", "DIU de cobre"],
+                correct: 0
+            },
+            {
+                question: "¿Qué método se puede insertar hasta 5 días después de una relación sin protección como emergencia?",
+                options: ["DIU de cobre", "Condón femenino", "Implante", "Píldora combinada"],
+                correct: 0
+            },
+            {
+                question: "¿Cuál es un método anticonceptivo quirúrgico para mujeres?",
+                options: ["Píldora", "Ligadura de trompas", "Parche", "DIU"],
+                correct: 1
+            },
+            {
+                question: "¿Qué método puede causar cambios de humor como efecto secundario?",
+                options: ["Condón", "Espermicida", "Métodos hormonales", "Retiro"],
+                correct: 2
+            },
+            {
+                question: "¿Qué método anticonceptivo se coloca dentro de la vagina antes de la relación?",
+                options: ["Parche", "Diafragma", "Implante", "Inyección"],
+                correct: 1
+            },
+            {
+                question: "¿Cuál es una ventaja del DIU de cobre?",
+                options: ["Es hormonal", "Se cambia cada mes", "No afecta el equilibrio hormonal", "Es de aplicación diaria"],
+                correct: 2
+            },
+            {
+                question: "¿Qué método anticonceptivo debe ser prescrito por un profesional de salud?",
+                options: ["Condón", "Espermicida", "DIU", "Método del ritmo"],
+                correct: 2
+            },
+            {
+                question: "¿Cuál es una desventaja del método de retiro (coitus interruptus)?",
+                options: ["Protección total", "No afecta hormonas", "Es gratuito", "Alta tasa de fallos"],
+                correct: 3
+            },
+            {
+                question: "¿Cuál es el anticonceptivo más accesible sin receta médica?",
+                options: ["Parche", "Píldora", "Condón", "Inyección"],
+                correct: 2
+            },
+            {
+                question: "¿Qué método no es recomendado como único anticonceptivo si hay alto riesgo de embarazo?",
+                options: ["Condón", "Espermicida", "DIU", "Implante"],
+                correct: 1
+            },
+            {
+                question: "¿Qué método anticonceptivo tiene menor efectividad si no se usa correctamente?",
+                options: ["Implante", "DIU", "Condón", "Vasectomía"],
+                correct: 2
+            },
+            {
+                question: "¿Cuál es el método más efectivo entre los siguientes?",
+                options: ["Coito interrumpido", "Implante subdérmico", "Condón", "Espermicida"],
+                correct: 1
+            },
+            {
+                question: "¿Qué método puede ser retirado inmediatamente si se desea concebir?",
+                options: ["Vasectomía", "Ligadura de trompas", "Implante subdérmico", "Inyección trimestral"],
+                correct: 2
+            }
+        ];
+
+        // Variables del juego
+        let gameState = {
+            mode: '',
+            players: [],
+            currentPlayerIndex: 0,
+            currentQuestion: 0,
+            gameQuestions: [],
+            timer: null,
+            timeLeft: GAME_CONFIG.DEFAULT_TIME,
+            questionTime: GAME_CONFIG.DEFAULT_TIME,
+            answered: false,
+            gameEnded: false,
+            selectedStarter: null,
+            playerTimes: {} // Nuevo objeto para almacenar tiempos por jugador
+        };
+
+        // Funciones principales
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function showSetup(mode) {
+            gameState.mode = mode;
+            if (mode === 'versus') {
+                document.getElementById('versusInputs').style.display = 'block';
+            } else {
+                document.getElementById('versusInputs').style.display = 'none';
+            }
+            showScreen('setupScreen');
+        }
+
+        function startGame() {
+            const player1Name = document.getElementById('player1Name').value.trim();
+            
+            if (!player1Name) {
+                alert('Por favor, ingresa el nombre del jugador 1');
+                return;
+            }
+
+            // Configurar jugadores con vidas
+            gameState.players = [{
+                name: player1Name,
+                score: 0,
+                lives: GAME_CONFIG.MAX_LIVES
+            }];
+
+            // Inicializar tiempo para el jugador 1
+            gameState.playerTimes[player1Name] = GAME_CONFIG.DEFAULT_TIME;
+
+            if (gameState.mode === 'versus') {
+                const player2Name = document.getElementById('player2Name').value.trim();
+                if (!player2Name) {
+                    alert('Por favor, ingresa el nombre del jugador 2');
+                    return;
+                }
+                gameState.players.push({
+                    name: player2Name,
+                    score: 0,
+                    lives: GAME_CONFIG.MAX_LIVES
+                });
+                
+                // Inicializar tiempo para el jugador 2
+                gameState.playerTimes[player2Name] = GAME_CONFIG.DEFAULT_TIME;
+                
+                // Mostrar selección de primer jugador
+                showPlayerSelection();
+                return;
+            }
+
+            // Continuar con el juego individual
+            prepareGame();
+        }
+
+        function showPlayerSelection() {
+            const container = document.createElement('div');
+            container.className = 'player-selector';
+            container.innerHTML = `
+                <h3>¿Quién empieza primero?</h3>
+                ${gameState.players.map((player, index) => `
+                    <div class="player-option" onclick="selectStartingPlayer(${index})">
+                        ${player.name}
+                    </div>
+                `).join('')}
+                <div class="player-option" onclick="selectStartingPlayer('random')">
+                    🎲 Aleatorio
+                </div>
+            `;
+            
+            document.getElementById('setupScreen').appendChild(container);
+        }
+
+        function selectStartingPlayer(choice) {
+            if (choice === 'random') {
+                gameState.selectedStarter = Math.floor(Math.random() * gameState.players.length);
+            } else {
+                gameState.selectedStarter = choice;
+            }
+            
+            // Remover el selector
+            document.querySelector('.player-selector').remove();
+            
+            // Preparar el juego
+            prepareGame();
+        }
+
+        function prepareGame() {
+            // Configurar preguntas
+            const questionCount = gameState.mode === 'versus' ? 
+                parseInt(document.getElementById('questionCount').value) : 
+                questions.length;
+            
+            gameState.gameQuestions = shuffleArray([...questions]).slice(0, questionCount);
+            gameState.currentQuestion = 0;
+            
+            // Establecer primer jugador
+            if (gameState.mode === 'versus' && gameState.selectedStarter !== null) {
+                gameState.currentPlayerIndex = gameState.selectedStarter;
+            } else {
+                gameState.currentPlayerIndex = 0;
+            }
+            
+            // Configurar tiempo inicial para cada jugador
+            gameState.players.forEach(player => {
+                gameState.playerTimes[player.name] = GAME_CONFIG.DEFAULT_TIME;
+            });
+            
+            gameState.timeLeft = GAME_CONFIG.DEFAULT_TIME;
+            gameState.questionTime = GAME_CONFIG.DEFAULT_TIME;
+            gameState.answered = false;
+            gameState.gameEnded = false;
+
+            showScreen('gameScreen');
+            setupPlayerInfo();
+            loadQuestion();
+        }
+
+        function setupPlayerInfo() {
+            const playerInfoDiv = document.getElementById('playerInfo');
+            playerInfoDiv.innerHTML = '';
+            
+            gameState.players.forEach((player, index) => {
+                const playerDiv = document.createElement('div');
+                playerDiv.className = `player ${index === gameState.currentPlayerIndex ? 'active' : ''}`;
+                
+                playerDiv.innerHTML = `
+                    <div class="player-name">${player.name}</div>
+                    <div class="player-score">Puntos: ${player.score}</div>
+                    <div class="lives-container">
+                        ${Array(player.lives).fill('<div class="life">❤️</div>').join('')}
+                        ${Array(GAME_CONFIG.MAX_LIVES - player.lives).fill('<div class="life lost">💔</div>').join('')}
+                    </div>
+                `;
+                
+                playerInfoDiv.appendChild(playerDiv);
+            });
+            
+            if (gameState.mode === 'versus') {
+                document.getElementById('currentTurn').innerHTML = 
+                    `🎯 Turno de: ${gameState.players[gameState.currentPlayerIndex].name}`;
+            } else {
+                document.getElementById('currentTurn').style.display = 'none';
+            }
+        }
+
+        function loadQuestion() {
+            if (gameState.currentQuestion >= gameState.gameQuestions.length) {
+                endGame();
+                return;
+            }
+
+            const question = gameState.gameQuestions[gameState.currentQuestion];
+            const currentPlayerName = gameState.players[gameState.currentPlayerIndex].name;
+            
+            document.getElementById('questionNumber').textContent = 
+                `Pregunta ${gameState.currentQuestion + 1}`;
+            document.getElementById('question').textContent = question.question;
+            document.getElementById('score').textContent = 
+                `Pregunta ${gameState.currentQuestion + 1} de ${gameState.gameQuestions.length}`;
+
+            // Actualizar barra de progreso
+            const progress = ((gameState.currentQuestion) / gameState.gameQuestions.length) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+
+            // Cargar opciones
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = option;
+                optionDiv.onclick = () => selectOption(index);
+                optionsDiv.appendChild(optionDiv);
+            });
+
+            // Configurar tiempo para el jugador actual
+            gameState.timeLeft = gameState.playerTimes[currentPlayerName] || GAME_CONFIG.DEFAULT_TIME;
+            gameState.questionTime = gameState.timeLeft; // Guardamos el tiempo actual para este jugador
+            
+            gameState.answered = false;
+            document.getElementById('nextBtn').style.display = 'none';
+            startTimer();
+        }
+
+        function selectOption(selectedIndex) {
+            if (gameState.answered) return;
+
+            gameState.answered = true;
+            clearInterval(gameState.timer);
+
+            const question = gameState.gameQuestions[gameState.currentQuestion];
+            const options = document.querySelectorAll('.option');
+            const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+            const currentPlayerName = currentPlayer.name;
+            
+            // Marcar respuesta seleccionada
+            options[selectedIndex].classList.add('selected');
+            
+            // Mostrar respuesta correcta
+            setTimeout(() => {
+                options[question.correct].classList.add('correct');
+                if (selectedIndex !== question.correct) {
+                    options[selectedIndex].classList.add('incorrect');
+                    currentPlayer.lives--;
+                    
+                    if (currentPlayer.lives <= 0) {
+                        showPhrase(["💀 ¡Te quedaste sin vidas!", "😵 ¡Eliminado!"], currentPlayer.name);
+                    }
+                }
+                
+                // Actualizar puntuación y tiempo para el jugador actual
+                if (selectedIndex === question.correct) {
+                    currentPlayer.score++;
+                    showPhrase(frasesAcierto, currentPlayer.name);
+                    createConfetti();
+                    
+                    // Reducir tiempo para la siguiente pregunta solo si acierta
+                    gameState.playerTimes[currentPlayerName] = Math.max(
+                        GAME_CONFIG.MIN_TIME,
+                        (gameState.playerTimes[currentPlayerName] || GAME_CONFIG.DEFAULT_TIME) - GAME_CONFIG.TIME_REDUCTION
+                    );
+                } else {
+                    showPhrase(frasesError, currentPlayer.name);
+                    // No se reduce el tiempo si falla
+                }
+                
+                setupPlayerInfo();
+                
+                // Mostrar el botón de siguiente pregunta después de que el usuario cierre el mensaje
+                document.getElementById('nextBtn').style.display = 'inline-block';
+            }, 500);
+        }
+
+        function showTurnSelector() {
+            const overlay = document.getElementById('turnSelectorOverlay');
+            const optionsDiv = document.getElementById('turnSelectorOptions');
+            
+            optionsDiv.innerHTML = `
+                <h3>¿Quién sigue en el turno?</h3>
+                ${gameState.players.filter(p => p.lives > 0).map((player, index) => `
+                    <div class="player-option" onclick="selectNextPlayer(${gameState.players.findIndex(p => p.name === player.name)})">
+                        ${player.name}
+                    </div>
+                `).join('')}
+                <div class="player-option" onclick="selectNextPlayer('random')">
+                    🎲 Aleatorio
+                </div>
+            `;
+            
+            overlay.classList.add('show');
+        }
+
+        function selectNextPlayer(choice) {
+            const activePlayers = gameState.players.filter(p => p.lives > 0);
+            
+            if (activePlayers.length === 0) {
+                endGame();
+                return;
+            }
+            
+            if (choice === 'random') {
+                gameState.currentPlayerIndex = gameState.players.findIndex(
+                    p => p.name === activePlayers[Math.floor(Math.random() * activePlayers.length)].name
+                );
+            } else {
+                gameState.currentPlayerIndex = choice;
+            }
+            
+            document.getElementById('turnSelectorOverlay').classList.remove('show');
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            // Avanzar pregunta
+            gameState.currentQuestion++;
+
+            loadQuestion();
+        }
+
+        function startTimer() {
+            const timerDiv = document.getElementById('timer');
+            timerDiv.textContent = `⏰ ${gameState.timeLeft}`;
+            timerDiv.classList.remove('urgent');
+            
+            gameState.timer = setInterval(() => {
+                gameState.timeLeft--;
+                timerDiv.textContent = `⏰ ${gameState.timeLeft}`;
+                
+                if (gameState.timeLeft <= 5) {
+                    timerDiv.classList.add('urgent');
+                }
+                
+                if (gameState.timeLeft <= 0) {
+                    clearInterval(gameState.timer);
+                    timeUp();
+                }
+            }, 1000);
+        }
+
+        function timeUp() {
+            if (gameState.answered) return;
+            
+            gameState.answered = true;
+            const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+            currentPlayer.score = Math.max(0, currentPlayer.score - 1); // Quitar 1 punto
+            
+            const question = gameState.gameQuestions[gameState.currentQuestion];
+            const options = document.querySelectorAll('.option');
+            
+            // Mostrar respuesta correcta
+            options[question.correct].classList.add('correct');
+            
+            showPhrase(
+                ["⏰ ¡Se acabó el tiempo! -1 punto", "¡Demasiado lento! Pierdes 1 punto 🐢"], 
+                currentPlayer.name
+            );
+            
+            setupPlayerInfo();
+            
+            // Mostrar el botón de siguiente pregunta después de que el usuario cierre el mensaje
+            document.getElementById('nextBtn').style.display = 'inline-block';
+        }
+
+        function showPhrase(phrases, playerName) {
+            const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+            document.getElementById('phraseText').textContent = randomPhrase;
+            document.getElementById('phrasePlayer').textContent = `¡${playerName}!`;
+            document.getElementById('phraseOverlay').classList.add('show');
+        }
+
+        function closePhraseOverlay() {
+            document.getElementById('phraseOverlay').classList.remove('show');
+            
+            // En modo versus, mostrar selector de turno después de cerrar el mensaje
+            if (gameState.mode === 'versus') {
+                showTurnSelector();
+            }
+        }
+
+        function endGame() {
+            gameState.gameEnded = true;
+            clearInterval(gameState.timer);
+            
+            // Ordenar jugadores por puntaje
+            const sortedPlayers = [...gameState.players].sort((a, b) => b.score - a.score);
+            const winner = sortedPlayers[0];
+            const loser = sortedPlayers.length > 1 ? sortedPlayers[1] : null;
+            
+            let winnerText = '';
+            let finalScoresText = '';
+            
+            if (gameState.mode === 'individual') {
+                const percentage = Math.round((winner.score / gameState.gameQuestions.length) * 100);
+                winnerText = `${winner.name} - ${percentage}% de aciertos`;
+                
+                if (percentage >= 80) {
+                    winnerText += " " + frasesGanador[Math.floor(Math.random() * frasesGanador.length)];
+                } else {
+                    winnerText += " " + frasesPerdedor[Math.floor(Math.random() * frasesPerdedor.length)];
+                }
+                
+                finalScoresText = `Puntuación Final: ${winner.score}/${gameState.gameQuestions.length}`;
+            } else {
+                // Modo versus
+                if (winner.score === (loser?.score || 0)) {
+                    winnerText = "🤝 ¡EMPATE!";
+                    finalScoresText = `
+                        ${winner.name}: ${winner.score} puntos<br>
+                        ${loser?.name || ''}: ${loser?.score || 0} puntos
+                    `;
+                } else {
+                    winnerText = `🏆 ¡${winner.name} GANA! ` + 
+                        frasesGanador[Math.floor(Math.random() * frasesGanador.length)];
+                    
+                    if (loser) {
+                        winnerText += `<br>💀 ${loser.name}: ` + 
+                            frasesPerdedor[Math.floor(Math.random() * frasesPerdedor.length)];
+                    }
+                    
+                    finalScoresText = `
+                        ${winner.name}: ${winner.score} puntos<br>
+                        ${loser?.name || ''}: ${loser?.score || 0} puntos
+                    `;
+                }
+            }
+            
+            document.getElementById('winnerText').innerHTML = winnerText;
+            document.getElementById('finalScores').innerHTML = finalScoresText;
+            
+            showScreen('resultsScreen');
+            createConfetti();
+        }
+
+        function createConfetti() {
+            for (let i = 0; i < GAME_CONFIG.CONFETTI_COUNT; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = getRandomColor();
+                    confetti.style.animationDelay = Math.random() * 3 + 's';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 4000);
+                }, i * 50);
+            }
+        }
+
+        function getRandomColor() {
+            const colors = ['#ffd700', '#ff69b4', '#4ecdc4', '#ff6b6b', '#a8e6cf', '#ffa726'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // Eventos de teclado
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('gameScreen').classList.contains('active') && !gameState.answered) {
+                const key = e.key;
+                if (key >= '1' && key <= '4') {
+                    const optionIndex = parseInt(key) - 1;
+                    const options = document.querySelectorAll('.option');
+                    if (options[optionIndex]) {
+                        selectOption(optionIndex);
+                    }
+                }
+            } else if (document.getElementById('phraseOverlay').classList.contains('show')) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    closePhraseOverlay();
+                }
+            } else if (document.getElementById('turnSelectorOverlay').classList.contains('show')) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    // Seleccionar aleatorio si se presiona Enter en el selector de turno
+                    selectNextPlayer('random');
+                }
+            }
+        });
+
+        // Limpiar timer al salir
+        window.addEventListener('beforeunload', () => {
+            if (gameState.timer) {
+                clearInterval(gameState.timer);
+            }
+        });
+    </script>
+</body>
+</html>
